@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match Software to Technical Writing Audiences</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .drag-item {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .drag-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .drag-item.dragging {
+      opacity: 0.5;
+      transform: scale(0.95);
+    }
+    .drop-zone {
+      transition: background-color 0.3s;
+    }
+    .drop-zone.highlight {
+      background-color: rgba(147, 197, 253, 0.3);
+    }
+    .drop-zone.correct {
+      background-color: rgba(167, 243, 208, 0.5);
+      border-color: rgba(52, 211, 153, 0.8);
+    }
+    .drop-zone.incorrect {
+      background-color: rgba(252, 165, 165, 0.5);
+      border-color: rgba(248, 113, 113, 0.8);
+    }
+    .tooltip {
+      position: relative;
+    }
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Technical Writing Audience Matching</h1>
+      <p class="text-lg text-gray-600">Match software icons to their corresponding technical writing audience types</p>
+      <div class="mt-4">
+        <span class="inline-block px-3 py-1 text-sm font-semibold bg-blue-100 text-blue-800 rounded-full">
+          <i class="fas fa-question-circle mr-1"></i> Drag and drop to match
+        </span>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div class="p-6 sm:p-8">
+        <div class="flex flex-col md:flex-row justify-between gap-8">
+          <!-- Left Column - Software Icons -->
+          <div class="w-full md:w-1/2">
+            <h2 class="text-xl font-semibold text-gray-700 mb-6 flex items-center justify-center">
+              <i class="fas fa-laptop-code mr-2 text-blue-500"></i> Software
+            </h2>
+            <div class="grid grid-cols-3 gap-4" id="dragItems">
+              <!-- Primary: Students (e.g., Google Classroom) -->
+              <div class="drag-item bg-white rounded-lg border-2 border-gray-200 p-4 flex flex-col items-center justify-center cursor-grab hover:border-blue-300"
+                   draggable="true" data-audience="Primary">
+                <img src=""C:\Users\ACER\Desktop\images.jpg"" alt="zoom" class="w-16 h-16 mb-2">
+                <span class="text-sm font-medium text-gray-700">Zoom</span>
+              </div>
+              <!-- Secondary: Teachers (e.g., Microsoft Teams) -->
+              <div class="drag-item bg-white rounded-lg border-2 border-gray-200 p-4 flex flex-col items-center justify-center cursor-grab hover:border-blue-300"
+                   draggable="true" data-audience="Secondary">
+                <img src=""C:\Users\ACER\Desktop\download.jpg"" alt="Microsoft Teams" class="w-16 h-16 mb-2">
+                <span class="text-sm font-medium text-gray-700">Microsoft Teams</span>
+              </div>
+              <!-- Tertiary: Administrators (e.g., Power BI) -->
+              <div class="drag-item bg-white rounded-lg border-2 border-gray-200 p-4 flex flex-col items-center justify-center cursor-grab hover:border-blue-300"
+                   draggable="true" data-audience="Tertiary">
+                <img src="" alt="Power BI" class="w-16 h-16 mb-2">
+                <span class="text-sm font-medium text-gray-700">Power BI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Audience Types -->
+          <div class="w-full md:w-1/2">
+            <h2 class="text-xl font-semibold text-gray-700 mb-6 flex items-center justify-center">
+              <i class="fas fa-users mr-2 text-blue-500"></i> Audience Types
+            </h2>
+            <div class="space-y-4" id="dropZones">
+              <div class="drop-zone bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-6 text-center"
+                   data-audience="Primary">
+                <h3 class="font-medium text-gray-700 mb-2">Primary</h3>
+                <p class="text-sm text-gray-500">Direct users of the documentation (e.g., students)</p>
+              </div>
+              
+              <div class="drop-zone bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-6 text-center"
+                   data-audience="Secondary">
+                <h3 class="font-medium text-gray-700 mb-2">Secondary</h3>
+                <p class="text-sm text-gray-500">Those who use the documentation indirectly (e.g., teachers)</p>
+              </div>
+              
+              <div class="drop-zone bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-6 text-center"
+                   data-audience="Tertiary">
+                <h3 class="font-medium text-gray-700 mb-2">Tertiary</h3>
+                <p class="text-sm text-gray-500">Those affected by the documentation (e.g., administrators)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <span id="scoreDisplay" class="font-medium text-gray-700">Matches: <span class="text-blue-600">0</span>/3</span>
+          </div>
+          <button id="resetBtn" class="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition font-medium">
+            <i class="fas fa-sync-alt mr-1"></i> Reset All
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Tooltip -->
+    <div class="mt-8 text-center">
+      <div class="tooltip inline-block">
+        <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">
+          <i class="fas fa-info-circle mr-1"></i> Need help?
+        </button>
+        <span class="tooltip-text">
+          Drag the software icons to the audience type that would typically use that software.
+          Green means correct, red means incorrect match.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dragItems = document.querySelectorAll('.drag-item');
+      const dropZones = document.querySelectorAll('.drop-zone');
+      const resetBtn = document.getElementById('resetBtn');
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      let score = 0;
+      let matchedPairs = 0;
+
+      // Add event listeners for each drag item
+      dragItems.forEach(item => {
+        item.addEventListener('dragstart', dragStart);
+        item.addEventListener('dragend', dragEnd);
+      });
+
+      // Add event listeners for each drop zone
+      dropZones.forEach(zone => {
+        zone.addEventListener('dragover', dragOver);
+        zone.addEventListener('dragenter', dragEnter);
+        zone.addEventListener('dragleave', dragLeave);
+        zone.addEventListener('drop', drop);
+      });
+
+      // Reset button functionality
+      resetBtn.addEventListener('click', resetGame);
+
+      function dragStart() {
+        this.classList.add('dragging');
+        // Set the drag data with the item's audience type
+        event.dataTransfer.setData('text/plain', this.dataset.audience);
+        // Also store the HTML of the item for visual feedback
+        event.dataTransfer.setData('text/html', this.outerHTML);
+      }
+
+      function dragEnd() {
+        this.classList.remove('dragging');
+      }
+
+      function dragOver(e) {
+        e.preventDefault();
+      }
+
+      function dragEnter(e) {
+        e.preventDefault();
+        this.classList.add('highlight');
+      }
+
+      function dragLeave() {
+        this.classList.remove('highlight');
+      }
+
+      function drop(e) {
+        e.preventDefault();
+        this.classList.remove('highlight');
+
+        // Get the dragged item's audience type
+        const draggedAudience = e.dataTransfer.getData('text/plain');
+        const dropZoneAudience = this.dataset.audience;
+        const draggedHTML = e.dataTransfer.getData('text/html');
+
+        // Check if the drop zone already has content
+        if (this.querySelector('.drag-item')) {
+          return; // Don't allow dropping if zone already has an item
+        }
+
+        // Create a new element from the dragged HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = draggedHTML;
+        const draggedElement = tempDiv.firstChild;
+
+        // Remove drag events from the cloned element
+        draggedElement.removeAttribute('draggable');
+        draggedElement.classList.remove('drag-item');
+        draggedElement.classList.add('matched-item');
+        draggedElement.style.cursor = 'default';
+
+        // Append the dragged element to the drop zone
+        this.innerHTML = '';
+        this.appendChild(draggedElement);
+
+        // Check if the match is correct
+        if (draggedAudience === dropZoneAudience) {
+          this.classList.add('correct');
+          this.classList.remove('incorrect');
+          score++;
+          matchedPairs++;
+        } else {
+          this.classList.add('incorrect');
+          this.classList.remove('correct');
+        }
+
+        // Update score display
+        scoreDisplay.innerHTML = `Matches: <span class="text-blue-600">${matchedPairs}</span>/3`;
+
+        // Check if all items are matched
+        if (matchedPairs === 3) {
+          setTimeout(() => {
+            alert('Congratulations! You matched all items correctly!');
+          }, 300);
+        }
+      }
+
+      function resetGame() {
+        if (matchedPairs > 0 && !confirm('Are you sure you want to reset all matches?')) {
+          return;
+        }
+
+        // Restore drop zones to original content
+        const dropZoneData = [
+          {
+            audience: "Primary",
+            desc: "Direct users of the documentation (e.g., students)"
+          },
+          {
+            audience: "Secondary",
+            desc: "Those who use the documentation indirectly (e.g., teachers)"
+          },
+          {
+            audience: "Tertiary",
+            desc: "Those affected by the documentation (e.g., administrators)"
+          }
+        ];
+
+        dropZones.forEach((zone, i) => {
+          zone.innerHTML = `
+            <h3 class="font-medium text-gray-700 mb-2">${dropZoneData[i].audience}</h3>
+            <p class="text-sm text-gray-500">${dropZoneData[i].desc}</p>
+          `;
+          zone.classList.remove('correct', 'incorrect');
+        });
+
+        // Move all matched items back to the dragItems container
+        const dragItemsContainer = document.getElementById('dragItems');
+        document.querySelectorAll('.matched-item').forEach(item => {
+          item.remove();
+        });
+
+        // Restore original drag items if they are missing
+        const originalDragItems = [
+          `<div class="drag-item bg-white rounded-lg border-2 border-gray-200 p-4 flex flex-col items-center justify-center cursor-grab hover:border-blue-300"
+            draggable="true" data-audience="Primary">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_Logo.png" alt="Google Classroom" class="w-16 h-16 mb-2">
+            <span class="text-sm font-medium text-gray-700">Google Classroom</span>
+          </div>`,
+          `<div class="drag-item bg-white rounded-lg border-2 border-gray-200 p-4 flex flex-col items-center justify-center cursor-grab hover:border-blue-300"
+            draggable="true" data-audience="Secondary">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg" alt="Microsoft Teams" class="w-16 h-16 mb-2">
+            <span class="text-sm font-medium text-gray-700">Microsoft Teams</span>
+          </div>`,
+          `<div class="drag-item bg-white rounded-lg border-2 border-gray-200 p-4 flex flex-col items-center justify-center cursor-grab hover:border-blue-300"
+            draggable="true" data-audience="Tertiary">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg" alt="Power BI" class="w-16 h-16 mb-2">
+            <span class="text-sm font-medium text-gray-700">Power BI</span>
+          </div>`
+        ];
+
+        dragItemsContainer.innerHTML = originalDragItems.join('');
+
+        // Re-select drag items and re-add event listeners
+        const newDragItems = dragItemsContainer.querySelectorAll('.drag-item');
+        newDragItems.forEach(item => {
+          item.addEventListener('dragstart', dragStart);
+          item.addEventListener('dragend', dragEnd);
+          item.style.display = 'flex';
+        });
+
+        // Reset score
+        score = 0;
+        matchedPairs = 0;
+        scoreDisplay.innerHTML = `Matches: <span class="text-blue-600">0</span>/3`;
+      }
+    });
+  </script>
+</body>
+</html>
